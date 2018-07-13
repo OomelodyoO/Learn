@@ -1,0 +1,31 @@
+buildscript {
+	ext {
+		springBootVersion = '1.5.10.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+
+group = 'win.zhangzhxing'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+}
+
+
+dependencies {
+	compile group: 'org.apache.shiro', name: 'shiro-spring-boot-web-starter', version: '1.4.0'
+	compile group: 'mysql', name: 'mysql-connector-java', version: '6.0.6'
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '1.5.10.RELEASE'
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+}

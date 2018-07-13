@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+            http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
+
+
+    <context:component-scan base-package="cn.zhang"/>
+    <!--开发环境 生产环境切换-->
+    <!--DEVELOP-->
+    <context:property-placeholder
+            location="classpath:/dev/mysql.properties"/>
+    <!-- c3p0 DataSource-->
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="user" value="${mysql.user}"/>
+        <property name="password" value="${mysql.password}"/>
+        <property name="driverClass" value="${mysql.driverClass}"/>
+        <property name="jdbcUrl" value="${mysql.jdbcUrl}"/>
+        <property name="minPoolSize" value="${mysql.minPoolSize}"/>
+        <property name="initialPoolSize" value="${mysql.initialPoolSize}"/>
+        <property name="maxPoolSize" value="${mysql.maxPoolSize}"/>
+        <property name="acquireIncrement" value="${mysql.acquireIncrement}"/>
+        <property name="maxIdleTime" value="${mysql.maxIdleTime}"/>
+    </bean>
+
+    <!--entitymanager JPA实体-->
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
+        </property>
+        <property name="packagesToScan" value="cn.zhang.model"/>
+        <property name="jpaProperties">
+            <props>
+                <prop key="hibernate.ejb.naming_strategy">org.hibernate.cfg.ImprovedNamingStrategy</prop>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop>
+                <prop key="hibernate.show_sql">false</prop>
+                <prop key="hibernate.format_sql">true</prop>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+            </props>
+        </property>
+    </bean>
+
+    <!--transation 事务-->
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
+    </bean>
+
+    <!--transation annotation 启用事务注解-->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+    <!--springdata SPRING DATA JPA设置扫描的位置-->
+    <jpa:repositories base-package="cn.zhang.dao" entity-manager-factory-ref="entityManagerFactory"/>
+</beans>

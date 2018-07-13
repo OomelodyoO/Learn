@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+option java_package = "cn.zhang.model";
+option java_outer_classname = "StudentProtos";
+
+message Student {
+    int32 id = 1;
+    string name = 2;
+    int32 age = 3;
+}
