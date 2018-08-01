@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+option java_package = "cn.zhang.proto";
+
+message Value {
+    int32 value = 1;
+}
