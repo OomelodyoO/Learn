@@ -1,6 +1,5 @@
 syntax = "proto3";
-import "java/cn/zhang/proto/Student.proto";
-
+import "Student.proto";
 option java_package = "cn.zhang.model";
 option java_outer_classname = "TeacherProtos";
 
@@ -8,5 +7,5 @@ message Teacher {
     int32 id = 1;
     string name = 2;
     int32 age = 3;
-    repeated Student student = 4;
+    repeated Student students = 4;
 }

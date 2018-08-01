@@ -24,7 +24,7 @@ public class TeacherTest {
                 .setId(2)
                 .setName("Zhang")
                 .setAge(60)
-                .addStudent(student)
+                .addStudents(student)
                 .build();
         output = new FileOutputStream("./proto_bin/Teacher.bin");
         teacher.writeTo(output);
