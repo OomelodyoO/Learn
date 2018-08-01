@@ -23,9 +23,10 @@ public final class CalculatorOuterClass {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\020Calculator.proto\032\013Value.proto2,\n\nCalcu" +
-      "lator\022\036\n\ncalculator\022\006.Value\032\006.Value\"\000B\017\n" +
-      "\rcn.zhang.grpcb\006proto3"
+      "\n\020Calculator.proto\032\013Value.proto2Z\n\nCalcu" +
+      "lator\022\036\n\ncalculator\022\006.Value\032\006.Value\"\000\022,\n" +
+      "\026calculatorServerStream\022\006.Value\032\006.Value\"" +
+      "\0000\001B\017\n\rcn.zhang.grpcb\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {

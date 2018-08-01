@@ -59,6 +59,38 @@ public final class CalculatorGrpc {
      return getCalculatorMethod;
   }
 
+  private static volatile io.grpc.MethodDescriptor<cn.zhang.proto.ValueOuterClass.Value,
+      cn.zhang.proto.ValueOuterClass.Value> getCalculatorServerStreamMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "calculatorServerStream",
+      requestType = cn.zhang.proto.ValueOuterClass.Value.class,
+      responseType = cn.zhang.proto.ValueOuterClass.Value.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.SERVER_STREAMING)
+  public static io.grpc.MethodDescriptor<cn.zhang.proto.ValueOuterClass.Value,
+      cn.zhang.proto.ValueOuterClass.Value> getCalculatorServerStreamMethod() {
+    io.grpc.MethodDescriptor<cn.zhang.proto.ValueOuterClass.Value, cn.zhang.proto.ValueOuterClass.Value> getCalculatorServerStreamMethod;
+    if ((getCalculatorServerStreamMethod = CalculatorGrpc.getCalculatorServerStreamMethod) == null) {
+      synchronized (CalculatorGrpc.class) {
+        if ((getCalculatorServerStreamMethod = CalculatorGrpc.getCalculatorServerStreamMethod) == null) {
+          CalculatorGrpc.getCalculatorServerStreamMethod = getCalculatorServerStreamMethod = 
+              io.grpc.MethodDescriptor.<cn.zhang.proto.ValueOuterClass.Value, cn.zhang.proto.ValueOuterClass.Value>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.SERVER_STREAMING)
+              .setFullMethodName(generateFullMethodName(
+                  "Calculator", "calculatorServerStream"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  cn.zhang.proto.ValueOuterClass.Value.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  cn.zhang.proto.ValueOuterClass.Value.getDefaultInstance()))
+                  .setSchemaDescriptor(new CalculatorMethodDescriptorSupplier("calculatorServerStream"))
+                  .build();
+          }
+        }
+     }
+     return getCalculatorServerStreamMethod;
+  }
+
   /**
    * Creates a new async stub that supports all call types for the service
    */
@@ -93,6 +125,13 @@ public final class CalculatorGrpc {
       asyncUnimplementedUnaryCall(getCalculatorMethod(), responseObserver);
     }
 
+    /**
+     */
+    public void calculatorServerStream(cn.zhang.proto.ValueOuterClass.Value request,
+        io.grpc.stub.StreamObserver<cn.zhang.proto.ValueOuterClass.Value> responseObserver) {
+      asyncUnimplementedUnaryCall(getCalculatorServerStreamMethod(), responseObserver);
+    }
+
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
           .addMethod(
@@ -102,6 +141,13 @@ public final class CalculatorGrpc {
                 cn.zhang.proto.ValueOuterClass.Value,
                 cn.zhang.proto.ValueOuterClass.Value>(
                   this, METHODID_CALCULATOR)))
+          .addMethod(
+            getCalculatorServerStreamMethod(),
+            asyncServerStreamingCall(
+              new MethodHandlers<
+                cn.zhang.proto.ValueOuterClass.Value,
+                cn.zhang.proto.ValueOuterClass.Value>(
+                  this, METHODID_CALCULATOR_SERVER_STREAM)))
           .build();
     }
   }
@@ -131,6 +177,14 @@ public final class CalculatorGrpc {
       asyncUnaryCall(
           getChannel().newCall(getCalculatorMethod(), getCallOptions()), request, responseObserver);
     }
+
+    /**
+     */
+    public void calculatorServerStream(cn.zhang.proto.ValueOuterClass.Value request,
+        io.grpc.stub.StreamObserver<cn.zhang.proto.ValueOuterClass.Value> responseObserver) {
+      asyncServerStreamingCall(
+          getChannel().newCall(getCalculatorServerStreamMethod(), getCallOptions()), request, responseObserver);
+    }
   }
 
   /**
@@ -156,6 +210,14 @@ public final class CalculatorGrpc {
     public cn.zhang.proto.ValueOuterClass.Value calculator(cn.zhang.proto.ValueOuterClass.Value request) {
       return blockingUnaryCall(
           getChannel(), getCalculatorMethod(), getCallOptions(), request);
+    }
+
+    /**
+     */
+    public java.util.Iterator<cn.zhang.proto.ValueOuterClass.Value> calculatorServerStream(
+        cn.zhang.proto.ValueOuterClass.Value request) {
+      return blockingServerStreamingCall(
+          getChannel(), getCalculatorServerStreamMethod(), getCallOptions(), request);
     }
   }
 
@@ -187,6 +249,7 @@ public final class CalculatorGrpc {
   }
 
   private static final int METHODID_CALCULATOR = 0;
+  private static final int METHODID_CALCULATOR_SERVER_STREAM = 1;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -207,6 +270,10 @@ public final class CalculatorGrpc {
       switch (methodId) {
         case METHODID_CALCULATOR:
           serviceImpl.calculator((cn.zhang.proto.ValueOuterClass.Value) request,
+              (io.grpc.stub.StreamObserver<cn.zhang.proto.ValueOuterClass.Value>) responseObserver);
+          break;
+        case METHODID_CALCULATOR_SERVER_STREAM:
+          serviceImpl.calculatorServerStream((cn.zhang.proto.ValueOuterClass.Value) request,
               (io.grpc.stub.StreamObserver<cn.zhang.proto.ValueOuterClass.Value>) responseObserver);
           break;
         default:
@@ -271,6 +338,7 @@ public final class CalculatorGrpc {
           serviceDescriptor = result = io.grpc.ServiceDescriptor.newBuilder(SERVICE_NAME)
               .setSchemaDescriptor(new CalculatorFileDescriptorSupplier())
               .addMethod(getCalculatorMethod())
+              .addMethod(getCalculatorServerStreamMethod())
               .build();
         }
       }

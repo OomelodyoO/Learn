@@ -16,13 +16,14 @@ public class BoceServer {
 
     private Server server;
 
-    private void start() throws IOException {
+    private void start() throws IOException, InterruptedException {
         /* The port on which the server should run */
         int port = 50051;
         server = ServerBuilder.forPort(port)
                 .addService(new CalculatorImpl())
                 .build()
                 .start();
+        server.awaitTermination();
         logger.info("Server started, listening on " + port);
         Runtime.getRuntime().addShutdownHook(new Thread() {
             @Override
@@ -64,6 +65,18 @@ public class BoceServer {
         public void calculator(ValueOuterClass.Value request, StreamObserver<ValueOuterClass.Value> responseObserver) {
             ValueOuterClass.Value value = ValueOuterClass.Value.newBuilder().setValue(request.getValue() + 10).build();
             responseObserver.onNext(value);
+            responseObserver.onCompleted();
+        }
+
+        @Override
+        public void calculatorServerStream(ValueOuterClass.Value request, StreamObserver<ValueOuterClass.Value> responseObserver) {
+            responseObserver.onNext(ValueOuterClass.Value.newBuilder().setValue(request.getValue() + request.getValue()).build());
+            responseObserver.onNext(ValueOuterClass.Value.newBuilder().setValue(request.getValue() - request.getValue()).build());
+            responseObserver.onNext(ValueOuterClass.Value.newBuilder().setValue(request.getValue() * request.getValue()).build());
+            responseObserver.onNext(ValueOuterClass.Value.newBuilder().setValue(request.getValue() / request.getValue()).build());
+            responseObserver.onCompleted();
+
+            responseObserver.onNext(ValueOuterClass.Value.newBuilder().setValue(request.getValue() / request.getValue()).build());
             responseObserver.onCompleted();
         }
     }

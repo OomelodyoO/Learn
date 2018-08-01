@@ -6,6 +6,7 @@ import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.StatusRuntimeException;
 
+import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -42,12 +43,29 @@ public class BoceClient {
     /**
      * Say hello to server.
      */
-    public void c(int i) {
+    public void calculator(int i) {
         ValueOuterClass.Value request = ValueOuterClass.Value.newBuilder().setValue(10).build();
         ValueOuterClass.Value response;
+        System.out.println("calculator");
         try {
             response = blockingStub.calculator(request);
-            System.out.printf("" + response.getValue());
+            System.out.println("" + response.getValue());
+        } catch (StatusRuntimeException e) {
+            logger.log(Level.WARNING, "RPC failed: {0}", e.getStatus());
+            return;
+        }
+    }
+
+    public void calculatorServerStream(int i) {
+        ValueOuterClass.Value request = ValueOuterClass.Value.newBuilder().setValue(10).build();
+        Iterator<ValueOuterClass.Value> iterator;
+        System.out.println("calculatorServerStream");
+        try {
+            iterator = blockingStub.calculatorServerStream(request);
+            while (iterator.hasNext()) {
+                ValueOuterClass.Value value = iterator.next();
+                System.out.println("" + value.getValue());
+            }
         } catch (StatusRuntimeException e) {
             logger.log(Level.WARNING, "RPC failed: {0}", e.getStatus());
             return;
@@ -57,7 +75,8 @@ public class BoceClient {
     public static void main(String[] args) throws Exception {
         BoceClient client = new BoceClient("localhost", 50051);
         try {
-            client.c(10);
+            client.calculator(10);
+            client.calculatorServerStream(10);
         } finally {
             client.shutdown();
         }
