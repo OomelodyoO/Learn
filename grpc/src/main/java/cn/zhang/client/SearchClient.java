@@ -1,11 +1,13 @@
 package cn.zhang.client;
 
 import cn.zhang.grpc.SearchGrpc;
+import cn.zhang.grpc.SearchService;
 import cn.zhang.proto.DomainProto;
 import cn.zhang.proto.IpProto;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.StatusRuntimeException;
+import io.grpc.stub.StreamObserver;
 
 import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
@@ -17,6 +19,8 @@ public class SearchClient {
 
     private final ManagedChannel channel;
     private final SearchGrpc.SearchBlockingStub blockingStub;
+
+    private final SearchGrpc.SearchStub searchStub;
 
     /**
      * Construct client connecting to HelloWorld server at {@code host:port}.
@@ -35,6 +39,7 @@ public class SearchClient {
     SearchClient(ManagedChannel channel) {
         this.channel = channel;
         blockingStub = SearchGrpc.newBlockingStub(channel);
+        searchStub = SearchGrpc.newStub(channel);
     }
 
     public void shutdown() throws InterruptedException {
@@ -70,12 +75,38 @@ public class SearchClient {
         }
     }
 
+    public void searchClientStream(String s) {
+        StreamObserver<IpProto.IP> streamObserver = new StreamObserver<IpProto.IP>() {
+            @Override
+            public void onNext(IpProto.IP value) {
+                System.out.println("searchClientStream");
+                System.out.println(value.getIp());
+            }
+
+            @Override
+            public void onError(Throwable t) {
+
+            }
+
+            @Override
+            public void onCompleted() {
+
+            }
+        };
+
+        StreamObserver<DomainProto.Domain> ipStreamObserver = searchStub.searchClientStream(streamObserver);
+        ipStreamObserver.onNext(DomainProto.Domain.newBuilder().setName("a").build());
+        ipStreamObserver.onNext(DomainProto.Domain.newBuilder().setName("b").build());
+        ipStreamObserver.onCompleted();
+    }
+
     public static void main(String[] args) throws Exception {
         SearchClient client = new SearchClient("localhost", 50051);
         try {
             System.out.println(client.search("a"));
             System.out.println("searchServerStream:");
             client.searchServerStream("b");
+            client.searchClientStream("s");
         } finally {
             client.shutdown();
         }

@@ -8,7 +8,9 @@ import io.grpc.ServerBuilder;
 import io.grpc.stub.StreamObserver;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -87,7 +89,28 @@ public class SearchServer {
 
         @Override
         public StreamObserver<DomainProto.Domain> searchClientStream(StreamObserver<IpProto.IP> responseObserver) {
-            return super.searchClientStream(responseObserver);
+            return new StreamObserver<DomainProto.Domain>() {
+                List<DomainProto.Domain> list = new ArrayList<>();
+                @Override
+                public void onNext(DomainProto.Domain value) {
+                    System.out.println("searchClientStream:onNext:");
+                    System.out.println(value.getName());
+                    list.add(value);
+                    System.out.println("searchClientStream:onNext:End");
+                }
+
+                @Override
+                public void onError(Throwable t) {
+
+                }
+
+                @Override
+                public void onCompleted() {
+                    System.out.println(list);
+                    responseObserver.onNext(IpProto.IP.newBuilder().setIp(ipMap.get(list.get(1).getName())).build());
+                    System.out.println("searchClientStream:onCompleted:");
+                }
+            };
         }
 
         @Override
