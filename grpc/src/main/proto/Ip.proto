@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+option java_package = "cn.zhang.proto";
+option java_outer_classname = "IpProto";
+
+message IP {
+    string ip = 1;
+}

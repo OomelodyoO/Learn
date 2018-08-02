@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+import "Domain.proto";
+import "Ip.proto";
+
+option java_package = "cn.zhang.grpc";
+option java_outer_classname = "SearchService";
+
+service Search {
+
+    rpc search (Domain) returns (IP) {}
+
+    rpc searchServerStream (Domain) returns (stream IP) {}
+
+    rpc searchClientStream (stream Domain) returns (IP) {}
+
+    rpc searchServerClientStream (stream Domain) returns (stream IP) {}
+}
