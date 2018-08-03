@@ -1,7 +1,6 @@
 package cn.zhang.client;
 
 import cn.zhang.grpc.SearchGrpc;
-import cn.zhang.grpc.SearchService;
 import cn.zhang.proto.DomainProto;
 import cn.zhang.proto.IpProto;
 import io.grpc.ManagedChannel;
@@ -79,8 +78,7 @@ public class SearchClient {
         StreamObserver<IpProto.IP> streamObserver = new StreamObserver<IpProto.IP>() {
             @Override
             public void onNext(IpProto.IP value) {
-                System.out.println("searchClientStream");
-                System.out.println(value.getIp());
+                System.out.println("client:searchClientStream:onNext:"+value.getIp());
             }
 
             @Override
@@ -100,12 +98,41 @@ public class SearchClient {
         ipStreamObserver.onCompleted();
     }
 
+    public void searchServerClientStream(String s){
+        StreamObserver<IpProto.IP> streamObserver = new StreamObserver<IpProto.IP>() {
+            @Override
+            public void onNext(IpProto.IP value) {
+                System.out.println(value.getIp());
+            }
+
+            @Override
+            public void onError(Throwable t) {
+
+            }
+
+            @Override
+            public void onCompleted() {
+
+            }
+        };
+        StreamObserver<DomainProto.Domain> ipStreamObserver = searchStub.searchServerClientStream(streamObserver);
+        ipStreamObserver.onNext(DomainProto.Domain.newBuilder().setName("a").build());
+        ipStreamObserver.onNext(DomainProto.Domain.newBuilder().setName("b").build());
+        ipStreamObserver.onCompleted();
+    }
+
     public static void main(String[] args) throws Exception {
         SearchClient client = new SearchClient("localhost", 50051);
         try {
+            System.out.println("main:search");
             System.out.println(client.search("a"));
-            System.out.println("searchServerStream:");
+            System.out.println("main:searchServerStream:");
             client.searchServerStream("b");
+
+            System.out.println("main:searchServerClientStream:");
+            client.searchServerClientStream("s");
+
+            System.out.println("main:searchClientStream:");
             client.searchClientStream("s");
         } finally {
             client.shutdown();
