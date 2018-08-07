@@ -94,10 +94,8 @@ public class SearchServer {
 
                 @Override
                 public void onNext(DomainProto.Domain value) {
-                    System.out.println("searchClientStream:onNext:");
-                    System.out.println(value.getName());
                     list.add(value);
-                    System.out.println("searchClientStream:onNext:End");
+                    responseObserver.onNext(IpProto.IP.newBuilder().setIp(ipMap.get(value.getName())).build());
                 }
 
                 @Override
@@ -107,9 +105,7 @@ public class SearchServer {
 
                 @Override
                 public void onCompleted() {
-                    System.out.println(list);
-                    responseObserver.onNext(IpProto.IP.newBuilder().setIp(ipMap.get(list.get(1).getName())).build());
-                    System.out.println("searchClientStream:onCompleted:");
+                    responseObserver.onCompleted();
                 }
             };
         }
@@ -117,19 +113,8 @@ public class SearchServer {
         @Override
         public StreamObserver<DomainProto.Domain> searchServerClientStream(StreamObserver<IpProto.IP> responseObserver) {
             return new StreamObserver<DomainProto.Domain>() {
-                List<DomainProto.Domain> list = new ArrayList<>();
-
                 @Override
                 public void onNext(DomainProto.Domain value) {
-                    System.out.println("searchServerClientStream:onNext:");
-                    System.out.println(value.getName());
-                    System.out.println("searchServerClientStream:onNext:End");
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    responseObserver.onNext(IpProto.IP.newBuilder().setIp(ipMap.get(value.getName())).build());
                     responseObserver.onNext(IpProto.IP.newBuilder().setIp(ipMap.get(value.getName())).build());
                 }
 
