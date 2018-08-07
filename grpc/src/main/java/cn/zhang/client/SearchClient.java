@@ -9,6 +9,7 @@ import io.grpc.StatusRuntimeException;
 import io.grpc.stub.StreamObserver;
 
 import java.util.Iterator;
+import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -116,25 +117,24 @@ public class SearchClient {
             }
         };
         StreamObserver<DomainProto.Domain> ipStreamObserver = searchStub.searchServerClientStream(streamObserver);
-        ipStreamObserver.onNext(DomainProto.Domain.newBuilder().setName("a").build());
-        try {
-            Thread.sleep(5 * 1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        System.out.println("请输入要查询的域名:");
+        while (true) {
+            Scanner input = new Scanner(System.in);
+            ipStreamObserver.onNext(DomainProto.Domain.newBuilder().setName(input.nextLine()).build());
         }
     }
 
     public static void main(String[] args) throws Exception {
         SearchClient client = new SearchClient("localhost", 50051);
         try {
-            System.out.println("main:search");
-            System.out.println(client.search("a"));
+//            System.out.println("main:search");
+//            System.out.println(client.search("a"));
 //            System.out.println("main:searchServerStream:");
 //            client.searchServerStream("b");
 //            System.out.println("main:searchClientStream:");
 //            client.searchClientStream("s");
-//            System.out.println("main:searchServerClientStream:");
-//            client.searchServerClientStream("s");
+            System.out.println("main:searchServerClientStream:");
+            client.searchServerClientStream("s");
         } finally {
             client.shutdown();
         }
