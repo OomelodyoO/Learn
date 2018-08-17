@@ -20,7 +20,7 @@ public class Send {
         Channel channel = connection.createChannel();
         channel.exchangeDeclare(EXCHANGE_NAME, "topic");
         String message = "message";
-        channel.basicPublish(EXCHANGE_NAME, "item.upd11ate", null, message.getBytes());
+        channel.basicPublish(EXCHANGE_NAME, "item.broadcast", null, message.getBytes());
         channel.close();
         connection.close();
     }

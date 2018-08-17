@@ -21,8 +21,8 @@ public class Recv {
                 QUEUE_NAME, false, false,
                 false, null
         );
-        channel.queueBind(QUEUE_NAME, EXCHANGE_NAME, "item.update");
-        channel.queueBind(QUEUE_NAME, EXCHANGE_NAME, "item.delete");
+        channel.queueBind(QUEUE_NAME, EXCHANGE_NAME, "item.broadcast");
+        channel.queueBind(QUEUE_NAME, EXCHANGE_NAME, "item.a");
         channel.basicQos(1);
         DefaultConsumer consumer = new DefaultConsumer(channel) {
             @Override
