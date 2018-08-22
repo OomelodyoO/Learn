@@ -25,4 +25,5 @@ include 'elasticsearch'
 include 'shiro'
 include 'quick-fix'
 include 'rabbit-mq'
+include 'spring-rmi'
 
