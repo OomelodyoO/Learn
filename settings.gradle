@@ -27,3 +27,5 @@ include 'quick-fix'
 include 'rabbit-mq'
 include 'spring-rmi'
 include 'http-session'
+include 'socket'
+
