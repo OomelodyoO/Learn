@@ -29,4 +29,5 @@ include 'spring-rmi'
 include 'http-session'
 include 'socket'
 include 'nio'
+include 'java-synchronized'
 
