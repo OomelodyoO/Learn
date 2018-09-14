@@ -1,8 +1,10 @@
 package cn.zhang.client;
 
 import cn.zhang.grpc.SearchGrpc;
+import cn.zhang.interceptor.ClientInterceptor;
 import cn.zhang.proto.DomainProto;
 import cn.zhang.proto.IpProto;
+import io.grpc.ClientInterceptors;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.StatusRuntimeException;
@@ -36,9 +38,16 @@ public class SearchClient {
     /**
      * Construct client for accessing HelloWorld server using the existing channel.
      */
+
+//    Client(ManagedChannel channel) {
+//        this.channel = channel;
+//        blockingStub = EchoGrpc.newBlockingStub(ClientInterceptors.intercept(channel, new UserAuthClientInterceptor()));
+//        echoStub = EchoGrpc.newStub(channel);
+//    }
     SearchClient(ManagedChannel channel) {
         this.channel = channel;
-        blockingStub = SearchGrpc.newBlockingStub(channel);
+        blockingStub = SearchGrpc.newBlockingStub(ClientInterceptors.intercept(channel, new ClientInterceptor()));
+//        blockingStub = SearchGrpc.newBlockingStub(channel);
         searchStub = SearchGrpc.newStub(channel);
     }
 
@@ -127,14 +136,32 @@ public class SearchClient {
     public static void main(String[] args) throws Exception {
         SearchClient client = new SearchClient("localhost", 50051);
         try {
-//            System.out.println("main:search");
-//            System.out.println(client.search("a"));
+//            while (true) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        System.out.println("main:search");
+                        System.out.println(client.search("a"));
+                    }
+                }, "thread-1").start();
+
+                Thread.sleep(2000);
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        System.out.println("main:search");
+                        System.out.println(client.search("a"));
+                    }
+                }, "thread-2").start();
+                Thread.sleep(2000);
+//            }
 //            System.out.println("main:searchServerStream:");
 //            client.searchServerStream("b");
 //            System.out.println("main:searchClientStream:");
 //            client.searchClientStream("s");
-            System.out.println("main:searchServerClientStream:");
-            client.searchServerClientStream("s");
+//            System.out.println("main:searchServerClientStream:");
+//            client.searchServerClientStream("s");
         } finally {
             client.shutdown();
         }

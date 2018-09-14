@@ -1,10 +1,12 @@
 package cn.zhang.server;
 
 import cn.zhang.grpc.SearchGrpc;
+import cn.zhang.interceptor.ServerInterruptImpl;
 import cn.zhang.proto.DomainProto;
 import cn.zhang.proto.IpProto;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
+import io.grpc.ServerInterceptors;
 import io.grpc.stub.StreamObserver;
 
 import java.io.IOException;
@@ -38,8 +40,9 @@ public class SearchServer {
     private void start() throws IOException, InterruptedException {
         /* The port on which the server should run */
         int port = 50051;
+//        .addService(ServerInterceptors.intercept(IUserAuthServiceGrpc.bindService(new UserAuthServiceImpl(context)), new UserAuthServerInsterceptor(context)))
         server = ServerBuilder.forPort(port)
-                .addService(new SearchServer.SearchImpl())
+                .addService(ServerInterceptors.intercept(new SearchServer.SearchImpl(), new ServerInterruptImpl()))
                 .build()
                 .start();
         server.awaitTermination();
@@ -73,6 +76,18 @@ public class SearchServer {
     public class SearchImpl extends SearchGrpc.SearchImplBase {
         @Override
         public void search(DomainProto.Domain request, StreamObserver<IpProto.IP> responseObserver) {
+            if (ServerInterruptImpl.JWT.get().equals("thread-1")) {
+                System.out.println("thread-1睡1秒");
+                try {
+                    Thread.sleep(10000);
+
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                System.out.println("thread-1" + ServerInterruptImpl.JWT.get());
+            } else {
+                System.out.println("thread-2" + ServerInterruptImpl.JWT.get());
+            }
             IpProto.IP ip = IpProto.IP.newBuilder().setIp(ipMap.get(request.getName())).build();
             responseObserver.onNext(ip);
             responseObserver.onCompleted();
