@@ -30,4 +30,5 @@ include 'http-session'
 include 'socket'
 include 'nio'
 include 'java-synchronized'
+include 'kafka'
 
