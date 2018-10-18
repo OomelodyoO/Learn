@@ -31,4 +31,5 @@ include 'socket'
 include 'nio'
 include 'java-synchronized'
 include 'kafka'
+include 'zookeeper'
 
