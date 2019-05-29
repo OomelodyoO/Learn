@@ -33,4 +33,5 @@ include 'java-synchronized'
 include 'kafka'
 include 'zookeeper'
 include 'java'
+include 'java-thread'
 
