@@ -2,6 +2,7 @@ package win.zhangzhixing;
 
 import win.zhangzhixing.abstractFactory.Provider;
 import win.zhangzhixing.abstractFactory.SendMailFactory;
+import win.zhangzhixing.adapterPattern.Adapter;
 import win.zhangzhixing.decoratorPattern.Circle;
 import win.zhangzhixing.decoratorPattern.RedShapeDecorator;
 import win.zhangzhixing.decoratorPattern.ShapeDecorator;
@@ -58,5 +59,11 @@ public class Application {
         System.out.println("======装饰器模式======");
         ShapeDecorator redCircle = new RedShapeDecorator(new Circle());
         redCircle.draw();
+
+        /**
+         * 适配器模式
+         */
+        Adapter adapter = new Adapter();
+        adapter.isPs2();
     }
 }
