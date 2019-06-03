@@ -2,6 +2,9 @@ package win.zhangzhixing;
 
 import win.zhangzhixing.abstractFactory.Provider;
 import win.zhangzhixing.abstractFactory.SendMailFactory;
+import win.zhangzhixing.decoratorPattern.Circle;
+import win.zhangzhixing.decoratorPattern.RedShapeDecorator;
+import win.zhangzhixing.decoratorPattern.ShapeDecorator;
 import win.zhangzhixing.factoryMethod.MultipleSendFactory;
 import win.zhangzhixing.factoryMethod.NormalSendFactory;
 import win.zhangzhixing.factoryMethod.Sender;
@@ -38,6 +41,7 @@ public class Application {
         /**
          * 抽象工厂模式
          */
+        System.out.println("======抽象工厂模式======");
         Provider provider = new SendMailFactory();
         win.zhangzhixing.abstractFactory.Sender produce = provider.produce();
         produce.send();
@@ -45,6 +49,14 @@ public class Application {
         /**
          * 单例模式
          */
+        System.out.println("======单例模式======");
         Singleton singleton = Singleton.getInstance();
+
+        /**
+         * 装饰器模式
+         */
+        System.out.println("======装饰器模式======");
+        ShapeDecorator redCircle = new RedShapeDecorator(new Circle());
+        redCircle.draw();
     }
 }
