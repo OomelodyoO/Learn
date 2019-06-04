@@ -3,6 +3,10 @@ package win.zhangzhixing;
 import win.zhangzhixing.abstractFactory.Provider;
 import win.zhangzhixing.abstractFactory.SendMailFactory;
 import win.zhangzhixing.adapterPattern.Adapter;
+import win.zhangzhixing.builderPattern.Builder;
+import win.zhangzhixing.builderPattern.Computer;
+import win.zhangzhixing.builderPattern.ConcreteBuilder;
+import win.zhangzhixing.builderPattern.Director;
 import win.zhangzhixing.decoratorPattern.Circle;
 import win.zhangzhixing.decoratorPattern.RedShapeDecorator;
 import win.zhangzhixing.decoratorPattern.ShapeDecorator;
@@ -63,7 +67,18 @@ public class Application {
         /**
          * 适配器模式
          */
+        System.out.println("======适配器模式======");
         Adapter adapter = new Adapter();
         adapter.isPs2();
+
+        /**
+         * 建造者模式
+         */
+        System.out.println("======建造者模式======");
+        Director director = new Director();
+        Builder builder = new ConcreteBuilder();
+        director.Construct(builder);
+        Computer computer = builder.GetComputer();
+        computer.Show();
     }
 }
