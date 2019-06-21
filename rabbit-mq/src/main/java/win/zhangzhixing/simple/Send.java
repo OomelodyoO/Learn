@@ -1,8 +1,6 @@
 package win.zhangzhixing.simple;
 
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
-import com.rabbitmq.client.ConnectionFactory;
+import com.rabbitmq.client.*;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
@@ -12,7 +10,7 @@ public class Send {
 
     public static void main(String[] args) throws IOException, TimeoutException {
         ConnectionFactory factory = new ConnectionFactory();
-        factory.setHost("localhost");
+        factory.setHost("192.168.6.184");
         factory.setVirtualHost("/zhang");
         factory.setUsername("zhang");
         factory.setPassword("zhang");
@@ -23,7 +21,9 @@ public class Send {
                 false, null
         );
         String message = "message";
-        channel.basicPublish("", QUEUE_NAME, null, message.getBytes());
+        for (int i = 1; i <= 10; i++) {
+            channel.basicPublish("", QUEUE_NAME, null, (message + "" + i).getBytes());
+        }
         channel.close();
         connection.close();
     }

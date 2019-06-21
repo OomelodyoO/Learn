@@ -11,7 +11,7 @@ public class Recv2 {
 
     public static void main(String[] args) throws IOException, TimeoutException {
         ConnectionFactory factory = new ConnectionFactory();
-        factory.setHost("localhost");
+        factory.setHost("192.168.6.184");
         factory.setVirtualHost("/zhang");
         factory.setUsername("zhang");
         factory.setPassword("zhang");
