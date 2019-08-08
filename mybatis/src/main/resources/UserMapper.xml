@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="win.zhangzhixing.model.entity.User">
+    <insert id="insert" parameterType="win.zhangzhixing.model.dto.UserDTO" useGeneratedKeys="true" keyProperty="id">
+INSERT INTO USER(age,gender,name) VALUES (#{age},#{gender},#{name})
+</insert>
+    <update id="update" parameterType="win.zhangzhixing.model.dto.UserDTO">
+        UPDATE USER
+        <set>
+            <if test="age!= null and age!= '' ">
+                age = #{age},
+            </if>
+            <if test="gender!= null and gender!= '' ">
+                gender = #{gender},
+            </if>
+            <if test="name!= null and name!= '' ">
+                name = #{name}
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+    <select id="get" parameterType="int" resultType="win.zhangzhixing.model.vo.UserVO">
+SELECT * FROM USER WHERE id=#{id}
+</select>
+    <select id="query" resultType="win.zhangzhixing.model.vo.UserVO">
+SELECT * FROM USER
+</select>
+    <delete id="delete" parameterType="java.lang.Integer">
+DELETE FROM  USER WHERE id = #{id}
+</delete>
+</mapper>
