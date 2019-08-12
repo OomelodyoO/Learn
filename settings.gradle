@@ -39,4 +39,5 @@ include 'zookeeper'
 include 'java'
 include 'java-thread'
 include 'mybatis'
+include 'hibernate'
 

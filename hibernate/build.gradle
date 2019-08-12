@@ -1,0 +1,19 @@
+plugins {
+    id 'java'
+}
+
+version '0.0.1'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    implementation 'mysql:mysql-connector-java:8.0.17'
+    implementation 'org.hibernate:hibernate-core:5.4.4.Final'
+    implementation 'org.projectlombok:lombok:1.18.8'
+    implementation 'org.apache.commons:commons-lang:3:3.9'
+}
