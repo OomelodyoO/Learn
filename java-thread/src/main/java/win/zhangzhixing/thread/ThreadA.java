@@ -10,7 +10,7 @@ public class ThreadA extends Thread {
         for (int i = 0; i < 10; i++) {
             try {
                 if (!this.isInterrupted()) {
-                    Thread.currentThread().sleep(50);
+                    sleep(50);
                     System.out.println("线程" + getName() + ":" + i);
                 }
             } catch (InterruptedException e) {

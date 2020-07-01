@@ -14,13 +14,13 @@ public class Application {
     public static void main(String[] args) throws InterruptedException, ExecutionException {
         ThreadA threadA = new ThreadA("A");
         ThreadB threadB = new ThreadB("B");
-//        testNormal(threadA, threadB);
+        testNormal(threadA, threadB);
 //        testWait(threadA, threadB);
 //        testJoin(threadA, threadB);
-        testInterrupt(threadA, threadB);
-        for (int i = 0; i < 10; i++) {
-            System.out.println("主线程:" + i);
-        }
+//        testInterrupt(threadA, threadB);
+//        for (int i = 0; i < 10; i++) {
+//            System.out.println("main:" + i);
+//        }
 
 
 //        testRunnable(new RunnableA(), new RunnableB());
@@ -29,13 +29,13 @@ public class Application {
     }
 
     public static void testNormal(ThreadA threadA, ThreadB threadB) {
-        System.out.println("======普通线程启动======");
+        System.out.println("======testNormal======");
         threadA.start();
         threadB.start();
     }
 
     public static void testWait(ThreadA threadA, ThreadB threadB) throws InterruptedException {
-        System.out.println("======wait 测试======");
+        System.out.println("======testWait======");
         threadA.start();
         synchronized (threadA) {
             threadA.wait();
@@ -47,14 +47,14 @@ public class Application {
     }
 
     public static void testJoin(ThreadA threadA, ThreadB threadB) throws InterruptedException {
-        System.out.println("======join 测试======");
+        System.out.println("======testJoin======");
         threadA.start();
         threadA.join();
         threadB.start();
     }
 
     public static void testInterrupt(ThreadA threadA, ThreadB threadB) throws InterruptedException {
-        System.out.println("======interrupt 测试======");
+        System.out.println("======testInterrupt======");
         threadA.start();
         threadA.interrupt();
         threadB.start();
