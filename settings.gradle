@@ -26,4 +26,5 @@ include 'java'
 include 'java-thread'
 include 'mybatis'
 include 'hibernate'
+include 'java-clone'
 
